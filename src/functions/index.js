@@ -30,3 +30,12 @@ export const updateTodos = async (id, todo) => {
     console.log(e);
   }
 };
+
+export const deleteTodo = async (id) => {
+  try {
+    console.log("deleting todo");
+    await api.deleteTodo(id);
+  } catch (e) {
+    console.log(e);
+  }
+};

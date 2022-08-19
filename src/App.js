@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Preloader from "./components/Preloader";
-import { addTodos, readTodosFun, updateTodos } from "./functions";
+import { addTodos, deleteTodo, readTodosFun, updateTodos } from "./functions";
 
 function App() {
   const [todo, setTodo] = useState({ title: "", content: "" });
@@ -43,12 +43,15 @@ function App() {
     } else {
       const res = await updateTodos(currentid, todo);
       console.log("rezz", res);
-      // setTodos([...todos, res]);
     }
-
     clear();
   };
-
+  const removeTodo = async (id) => {
+    console.log("idzz", id);
+    await deleteTodo(id);
+    const todoArr = await readTodosFun();
+    setTodos(todoArr);
+  };
   return (
     <div className="App">
       <div className="container">
@@ -93,17 +96,16 @@ function App() {
           ) : todos.length > 0 ? (
             <ul className="collection">
               {todos.map((todo) => (
-                <li
-                  onClick={() => setCurrentid(todo._id)}
-                  key={todo._id}
-                  href="#!"
-                  className="collection-item"
-                >
+                <li key={todo._id} href="#!" className="collection-item">
                   <div>
-                    <h5>{todo.title}</h5>
+                    <h5 onClick={() => setCurrentid(todo._id)}>{todo.title}</h5>
                     <p>
                       {todo.content}
-                      <a href="#!" className="secondary-content">
+                      <a
+                        onClick={() => removeTodo(todo._id)}
+                        href="#!"
+                        className="secondary-content"
+                      >
                         <i className="material-icons">delete</i>
                       </a>
                     </p>
